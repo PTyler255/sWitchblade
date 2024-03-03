@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://d1vejhjj1gy1b"]
+
+[ext_resource type="Texture2D" uid="uid://dd2te508bwswt" path="res://icon.svg" id="1_dmscr"]
+[ext_resource type="Script" path="res://character function/TeliPrototype.cs" id="1_nfrw6"]
+[ext_resource type="Script" path="res://character function/Health.cs" id="3_vfa4d"]
+[ext_resource type="Script" path="res://character function/Attack.cs" id="3_w50c8"]
+[ext_resource type="Script" path="res://character function/LedgeGrab.cs" id="5_kvqfm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e75g4"]
+radius = 50.0
+height = 128.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_nfrw6")
+_jumpFloatMax = 950.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_dmscr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_e75g4")
+
+[node name="Attack" type="Node" parent="."]
+script = ExtResource("3_w50c8")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_vfa4d")
+
+[node name="Poise" type="Timer" parent="Health"]
+wait_time = 0.5
+one_shot = true
+
+[node name="LedgeGrab" type="Node2D" parent="."]
+script = ExtResource("5_kvqfm")
+
+[node name="WallPoint" type="Node2D" parent="LedgeGrab"]
+
+[node name="LedgeRayCast" type="RayCast2D" parent="LedgeGrab/WallPoint"]
+position = Vector2(0, -120)
+target_position = Vector2(0, 120)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="LedgePoint" type="Node2D" parent="LedgeGrab/WallPoint/LedgeRayCast"]
+
+[node name="WallRayCastLeft" type="RayCast2D" parent="LedgeGrab"]
+target_position = Vector2(-180, 24)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="WallRayCastRight" type="RayCast2D" parent="LedgeGrab"]
+exclude_parent = false
+target_position = Vector2(180, 24)
+collision_mask = 2
+collide_with_areas = true
+
+[connection signal="timeout" from="Health/Poise" to="Health" method="_on_poise_timeout"]

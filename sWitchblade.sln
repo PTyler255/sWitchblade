@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sWitchblade", "sWitchblade.csproj", "{4356CC8A-CF16-434F-A8E1-1BA79C521D7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4356CC8A-CF16-434F-A8E1-1BA79C521D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4356CC8A-CF16-434F-A8E1-1BA79C521D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4356CC8A-CF16-434F-A8E1-1BA79C521D7C}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{4356CC8A-CF16-434F-A8E1-1BA79C521D7C}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{4356CC8A-CF16-434F-A8E1-1BA79C521D7C}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{4356CC8A-CF16-434F-A8E1-1BA79C521D7C}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8DBB384-FE90-41E1-82C9-7CFB3991F568}
+	EndGlobalSection
+EndGlobal
