@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://0widiogstrhg"]
+
+[ext_resource type="Script" path="res://character function/LedgeGrab.cs" id="1_swpgg"]
+
+[node name="LedgeGrab" type="Node2D"]
+script = ExtResource("1_swpgg")
+
+[node name="WallPoint" type="Node2D" parent="."]
+
+[node name="LedgeRayCast" type="RayCast2D" parent="WallPoint"]
+position = Vector2(0, -120)
+target_position = Vector2(0, 120)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="LedgePoint" type="Node2D" parent="WallPoint/LedgeRayCast"]
+
+[node name="WallRayCastLeft" type="RayCast2D" parent="."]
+target_position = Vector2(-100, 13)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="WallRayCastRight" type="RayCast2D" parent="."]
+exclude_parent = false
+target_position = Vector2(100, 13)
+collision_mask = 2
+collide_with_areas = true

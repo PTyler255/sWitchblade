@@ -32,7 +32,7 @@ public partial class LedgeGrab : Node2D{
 		}
 	}
 	
-	private void handleLedgeClimb(){} {
+	private void handleLedgeClimb(){
 		//TODO
 	}
 

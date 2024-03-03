@@ -15,6 +15,10 @@ run/main_scene="res://test.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
+
 [dialogic]
 
 directories/dch_directory={}
