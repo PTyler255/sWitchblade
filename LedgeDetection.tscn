@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://0widiogstrhg"]
+
+[ext_resource type="Script" path="res://CharacterFunction/LedgeDetection.cs" id="1_sgkhk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j173d"]
+size = Vector2(18, 4)
+
+[node name="LedgeGrab" type="Node2D"]
+script = ExtResource("1_sgkhk")
+
+[node name="WallPoint" type="Node2D" parent="."]
+
+[node name="LedgeRayCast" type="RayCast2D" parent="WallPoint"]
+position = Vector2(0, -100)
+target_position = Vector2(0, 100)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="LedgePoint" type="Node2D" parent="WallPoint/LedgeRayCast"]
+
+[node name="Area2D" type="Area2D" parent="WallPoint/LedgeRayCast/LedgePoint"]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallPoint/LedgeRayCast/LedgePoint/Area2D"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_j173d")
+
+[node name="WallRayCastLeft" type="RayCast2D" parent="."]
+target_position = Vector2(-100, -13)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="WallRayCastRight" type="RayCast2D" parent="."]
+exclude_parent = false
+target_position = Vector2(100, -13)
+collision_mask = 2
+collide_with_areas = true
+
+[connection signal="area_entered" from="WallPoint/LedgeRayCast/LedgePoint/Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="WallPoint/LedgeRayCast/LedgePoint/Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="body_entered" from="WallPoint/LedgeRayCast/LedgePoint/Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="WallPoint/LedgeRayCast/LedgePoint/Area2D" to="." method="_on_area_2d_body_exited"]

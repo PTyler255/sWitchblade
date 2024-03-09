@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=3 uid="uid://b2q1h08latbo2"]
+
+[ext_resource type="Script" path="res://Player/Player.cs" id="1_vlnrf"]
+[ext_resource type="Script" path="res://Utility/StateMachine.cs" id="2_f0h5i"]
+[ext_resource type="Texture2D" uid="uid://blne7cir6tbyn" path="res://textures/DevTextures/TeliDev.png" id="2_ibip6"]
+[ext_resource type="PackedScene" uid="uid://0widiogstrhg" path="res://LedgeDetection.tscn" id="3_0n2yd"]
+[ext_resource type="Script" path="res://Player/States/Idle.cs" id="4_bpue7"]
+[ext_resource type="Script" path="res://Player/States/Moving.cs" id="6_ais1x"]
+[ext_resource type="Script" path="res://Player/States/Airborn.cs" id="6_txb4p"]
+[ext_resource type="Script" path="res://Player/States/Jump.cs" id="7_402o2"]
+[ext_resource type="Script" path="res://Player/States/Roll.cs" id="8_xvq3d"]
+[ext_resource type="Script" path="res://Player/States/Hang.cs" id="9_5hwof"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y5c44"]
+radius = 43.0
+height = 128.0
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_stateMachine", "_body")]
+script = ExtResource("1_vlnrf")
+_stateMachine = NodePath("StateMachine")
+_body = NodePath("Body")
+
+[node name="GroundRayCast" type="RayCast2D" parent="."]
+target_position = Vector2(0, 180)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Body" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Body"]
+scale = Vector2(0.256716, 0.256716)
+texture = ExtResource("2_ibip6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_y5c44")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("2_f0h5i")
+_initialState = NodePath("Idle")
+
+[node name="Airborn" type="Node" parent="StateMachine" node_paths=PackedStringArray("_ledgeHitBox")]
+script = ExtResource("6_txb4p")
+_lerpSpeed = 2.5
+_ledgeHitBox = NodePath("../../LedgeDetection")
+
+[node name="Hang" type="Node" parent="StateMachine"]
+script = ExtResource("9_5hwof")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_bpue7")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("7_402o2")
+
+[node name="Moving" type="Node" parent="StateMachine"]
+script = ExtResource("6_ais1x")
+
+[node name="Roll" type="Node" parent="StateMachine"]
+script = ExtResource("8_xvq3d")
+
+[node name="LedgeDetection" parent="." node_paths=PackedStringArray("_groundRayCast") instance=ExtResource("3_0n2yd")]
+_groundRayCast = NodePath("../GroundRayCast")
