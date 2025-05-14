@@ -12,9 +12,8 @@ public partial class Airborn : PlayerState {
 		//if (!(Math.Abs(_player._Direction) > 0.0f)) return;
 		_player.LoadVelocity();
 		float finalSpeed = _player._ForwardWalk * _player._Direction;
-		if (Math.Abs(_player.velocity.X) > _player._ForwardWalk && !(_player.velocity.X*_player._Direction <= 0.0)) {
+		if (Math.Abs(_player.velocity.X) > _player._ForwardWalk && _player.velocity.X*_player._Direction > 0.0)
 			finalSpeed = _player.velocity.X;
-		}
 		_player.velocity.X = finalSpeed;
 		_player.velocity = _player.Velocity.Lerp(_player.velocity, (float)delta*_lerpSpeed);
 		_player.SaveVelocity();
@@ -32,7 +31,7 @@ public partial class Airborn : PlayerState {
 				_stateMachine.TransitionTo("Idle");
 			else*/ _stateMachine.TransitionTo("Moving");
 		}
-		if (_player.Velocity.Y > _player._LedgeSpeed && _ledgeHitBox.GetCanGrab() && !(_player._LedgeCoolDown > 0.0f)) {
+		else if (_player.Velocity.Y > _player._LedgeSpeed && _ledgeHitBox.GetCanGrab() && !(_player._LedgeCoolDown > 0.0f)) {
 			Dictionary<string, object> msg = new Dictionary<string, object>();
 			msg["position"] = _ledgeHitBox.GetGrabLocation();
 			_stateMachine.TransitionTo("Hang", msg);

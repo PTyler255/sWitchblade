@@ -37,7 +37,6 @@ public partial class Player : CharacterBody2D{
 		Rect2 rect = ((Sprite2D)GetNode("Body/Sprite")).GetRect();
 		_Width = rect.Size.X*Scale.X;
 		_Height = rect.Size.Y*Scale.Y;
-		SetPhysicsProcess(false);
 	}
 	
 	public void unhandledInput(InputEvent evnt){
@@ -57,16 +56,15 @@ public partial class Player : CharacterBody2D{
 		}*/
 	}
 	
-	public override void _PhysicsProcess(double delta){
-		_handleSticks();
+	public void _StatePhysicsProcess(double delta){
 		velocity = Velocity;
-		_handleFall(delta);
+		_handleFall(delta); //This is an optional process because i sometimes want to turn off gravity.
 		velocity.Y -= _handleFloat((float)delta);
 		Velocity = velocity;
 		MoveAndSlide();
 	}
 	
-	public override void _Process(double delta){
+	public override void _PhysicsProcess(double delta){
 		_handleSticks();
 		_handleLedgeCD((float)delta);
 	}

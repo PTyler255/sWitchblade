@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class StateMachine : Node{
 	
-	[Signal] public delegate void transitionedEventHandler(State state);
+	[Signal] public delegate void TransitionedEventHandler(State state);
 	[Export] private NodePath _initialState = new NodePath();
 	private State _state;
 	public string _currentState;
@@ -18,10 +18,6 @@ public partial class StateMachine : Node{
 		_initAutomata();
 		//await ToSignal(Owner, "ready");
 		_state.Enter();
-	}
-	
-	public void _print(){
-		GD.Print("TEST");
 	}
 
 	private void _initAutomata() { _initAutomataRecursion(GetChildren());} 
@@ -53,6 +49,7 @@ public partial class StateMachine : Node{
 		_state.Exit();
 		_state = _stateAutomata[targetState];
 		_currentState = targetState;
+		EmitSignal(SignalName.Transitioned, _state);
 		_state.Enter(msg);
 	}
 }

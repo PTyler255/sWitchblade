@@ -13,5 +13,5 @@ public partial class PlayerState : State {
 		_animation = (AnimationPlayer)_player.GetNode("AnimationPlayer");
 		base._Ready();
 	}
-	public override void _PhysicsProcess(double delta){ _player._PhysicsProcess(delta);}
+	public override void _PhysicsProcess(double delta){ _player._StatePhysicsProcess(delta);}
 }

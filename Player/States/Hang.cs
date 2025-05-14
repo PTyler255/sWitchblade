@@ -20,11 +20,13 @@ public partial class Hang : PlayerState {
 	}
 	
 	private void _stateCheck(){
-		if (Input.IsActionJustPressed("jump"))
+		if (Input.IsActionJustPressed("jump")){
+			_player.FacingDirection();
 			_stateMachine.TransitionTo("Jump");
-		if (_player.LStickY < -0.5f)
+		}
+		else if (_player.LStickY < -0.5f)
 			_stateMachine.TransitionTo("Airborn");
-		if (_player.LStickY > 0.5f){
+		else if (_player.LStickY > 0.5f){
 			position.X = grabPosition.X;
 			position.Y = grabPosition.Y - _player._Height/8f;
 			_player.Position = position;

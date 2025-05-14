@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+/*
 public partial class Attack : Node
 {
 	//[Export] 
@@ -14,3 +15,4 @@ public partial class Attack : Node
 	{
 	}
 }
+*/

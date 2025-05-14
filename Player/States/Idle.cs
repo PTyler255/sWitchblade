@@ -14,10 +14,21 @@ public partial class Idle : PlayerState {
 	private void _stateCheck(){
 		if (!_player.IsOnFloor())
 			_stateMachine.TransitionTo("Airborn");
-		if (Input.IsActionJustPressed("jump"))
+		else if (Input.IsActionJustPressed("jump"))
 			_stateMachine.TransitionTo("Jump");
-		if (Math.Abs(_player.LStickX) > 0.0) 
+		else if (Math.Abs(_player.LStickX) > 0.0) 
 			_stateMachine.TransitionTo("Moving");
+		if (Input.IsActionJustPressed("attack")){
+			string direction = "";
+			if (_player.LStickY != 0 && Math.Abs(_player.LStickY) > Math.Abs(_player.LStickX)){
+				if(_player.LStickY > 0.0f)
+					direction = "Down";
+				else direction = "Up";
+			}
+			Dictionary<string,object> msg = new Dictionary<string,object>();
+			msg["direction"] = direction;
+			_stateMachine.TransitionTo("AttackAction", msg);
+		}
 		if (Input.IsActionJustPressed("roll"))
 			_stateMachine.TransitionTo("Roll");
 	}

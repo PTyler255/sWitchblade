@@ -1,29 +1,51 @@
-[gd_scene load_steps=12 format=3 uid="uid://b2q1h08latbo2"]
+[gd_scene load_steps=21 format=3 uid="uid://b2q1h08latbo2"]
 
 [ext_resource type="Script" path="res://Player/Player.cs" id="1_vlnrf"]
 [ext_resource type="Script" path="res://Utility/StateMachine.cs" id="2_f0h5i"]
 [ext_resource type="Texture2D" uid="uid://blne7cir6tbyn" path="res://textures/DevTextures/TeliDev.png" id="2_ibip6"]
 [ext_resource type="PackedScene" uid="uid://0widiogstrhg" path="res://LedgeDetection.tscn" id="3_0n2yd"]
+[ext_resource type="Script" path="res://HurtBox.cs" id="3_naugk"]
 [ext_resource type="Script" path="res://Player/States/Idle.cs" id="4_bpue7"]
+[ext_resource type="Script" path="res://Attack.cs" id="5_vlh4u"]
+[ext_resource type="Script" path="res://Player/States/AttackAction.cs" id="6_75tsa"]
 [ext_resource type="Script" path="res://Player/States/Moving.cs" id="6_ais1x"]
 [ext_resource type="Script" path="res://Player/States/Airborn.cs" id="6_txb4p"]
 [ext_resource type="Script" path="res://Player/States/Jump.cs" id="7_402o2"]
 [ext_resource type="Script" path="res://Player/States/Roll.cs" id="8_xvq3d"]
 [ext_resource type="Script" path="res://Player/States/Hang.cs" id="9_5hwof"]
+[ext_resource type="Script" path="res://CharacterFunction/Health.cs" id="11_djcxw"]
+[ext_resource type="Script" path="res://Hitbox.cs" id="12_xwcmy"]
+[ext_resource type="Script" path="res://AttackHandler.cs" id="14_twrbd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y5c44"]
 radius = 43.0
 height = 128.0
 
+[sub_resource type="Animation" id="Animation_8lfeb"]
+resource_name = "LongSwordAttack1"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qysok"]
+_data = {
+"LongSwordAttack1": SubResource("Animation_8lfeb")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tg4av"]
+radius = 43.0
+height = 130.0
+
 [node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_stateMachine", "_body")]
 script = ExtResource("1_vlnrf")
 _stateMachine = NodePath("StateMachine")
 _body = NodePath("Body")
+_RollLength = 1200.0
 
-[node name="GroundRayCast" type="RayCast2D" parent="."]
-target_position = Vector2(0, 180)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_y5c44")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qysok")
+}
 
 [node name="Body" type="Node2D" parent="."]
 
@@ -31,8 +53,21 @@ target_position = Vector2(0, 180)
 scale = Vector2(0.256716, 0.256716)
 texture = ExtResource("2_ibip6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_y5c44")
+[node name="Hurtbox" type="Area2D" parent="Body"]
+collision_layer = 8
+collision_mask = 8
+monitorable = false
+script = ExtResource("3_naugk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/Hurtbox"]
+shape = SubResource("CapsuleShape2D_tg4av")
+
+[node name="AttackHandler" type="Node2D" parent="Body"]
+script = ExtResource("14_twrbd")
+_initialAttack = NodePath("LongSword")
+
+[node name="LongSword" type="Node2D" parent="Body/AttackHandler"]
+script = ExtResource("5_vlh4u")
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_f0h5i")
@@ -42,6 +77,10 @@ _initialState = NodePath("Idle")
 script = ExtResource("6_txb4p")
 _lerpSpeed = 2.5
 _ledgeHitBox = NodePath("../../LedgeDetection")
+
+[node name="AttackAction" type="Node" parent="StateMachine" node_paths=PackedStringArray("_attackHandler")]
+script = ExtResource("6_75tsa")
+_attackHandler = NodePath("../../Body/AttackHandler")
 
 [node name="Hang" type="Node" parent="StateMachine"]
 script = ExtResource("9_5hwof")
@@ -60,3 +99,16 @@ script = ExtResource("8_xvq3d")
 
 [node name="LedgeDetection" parent="." node_paths=PackedStringArray("_groundRayCast") instance=ExtResource("3_0n2yd")]
 _groundRayCast = NodePath("../GroundRayCast")
+
+[node name="GroundRayCast" type="RayCast2D" parent="."]
+target_position = Vector2(0, 180)
+
+[node name="Health" type="Node" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("11_djcxw")
+character = NodePath("..")
+
+[node name="Hurtbox" type="Node" parent="."]
+script = ExtResource("12_xwcmy")
+
+[connection signal="area_entered" from="Body/Hurtbox" to="Hurtbox" method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Body/Hurtbox" to="Hurtbox" method="_on_area_2d_body_entered"]
